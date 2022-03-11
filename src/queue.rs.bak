@@ -1,0 +1,44 @@
+const N:usize = 10;
+
+#[derive(Debug)]
+pub struct MyQueue {
+    values: [Option<i32>;N+1],
+    front: usize,
+    rear: usize,
+}
+
+impl MyQueue {
+    pub fn empty() -> MyQueue {
+        MyQueue {
+            values: [None;N+1],
+            front: 0,
+            rear: 0,
+        }
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.front == self.rear
+    }
+
+    pub fn dequeue(&mut self) -> Option<i32> {
+        if self.front == self.rear {
+            return None
+        }
+        else {
+            let value = self.values[self.front];
+            self.front = (self.front + 1) % (N+1); 
+            return value
+        }
+    }
+
+    pub fn enqueue(&mut self, value:i32) {
+        if (self.rear + 1) % (N+1) == self.front {
+            assert_eq!((self.rear + 1) % (N+1), self.front);
+            println!("Queue full");
+        }
+        else {
+            self.values[self.rear] = Some(value);
+            self.rear = (self.rear + 1) % (N+1);
+        }
+    } 
+}
